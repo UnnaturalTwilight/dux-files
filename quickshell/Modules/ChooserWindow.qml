@@ -117,6 +117,7 @@ FloatingWindow {
     function start() {
         if (!request)
             return;
+        setForeignParent();
         const saved = FileBrowserSettings.load("chooser");
         restoring = true;
         viewMode = saved.viewMode || SettingsData.defaultView;
@@ -134,6 +135,12 @@ FloatingWindow {
         nameField.text = request.currentName ?? "";
         openStart(saved.lastPath);
         focusStart();
+    }
+
+    function setForeignParent() {
+        if (window.foreignParent === undefined)
+            return;
+        window.foreignParent = request.parentWindow ?? "";
     }
 
     function openStart(lastPath) {
