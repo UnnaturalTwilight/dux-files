@@ -601,6 +601,7 @@ FloatingWindow {
                     splitView: window.splitView
                     backEnabled: window.activePane.canGoBack
                     forwardEnabled: window.activePane.canGoForward
+                    upEnabled: window.activePane.canGoUp
                     sortKey: window.activePane.effectiveSortKey
                     sortDescending: window.activePane.effectiveSortDescending
                     resultsActive: window.activePane.resultsActive
@@ -649,6 +650,7 @@ FloatingWindow {
                     onSidebarToggled: sidebarHost.toggle()
                     onBackRequested: window.activePane.back()
                     onForwardRequested: window.activePane.forward()
+                    onUpRequested: window.activePane.up()
                     onSplitToggled: window.toggleSplit()
                     onSortKeySelected: key => window.activePane.sortBy(key)
                     onSortDirectionToggled: window.activePane.flipSort()

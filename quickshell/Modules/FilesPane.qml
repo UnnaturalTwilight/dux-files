@@ -36,6 +36,7 @@ FocusScope {
     readonly property alias path: browser.path
     readonly property alias canGoBack: browser.canGoBack
     readonly property alias canGoForward: browser.canGoForward
+    readonly property bool canGoUp: !virtualActive && browser.canGoUp
     readonly property alias editingPath: browser.editingPath
     readonly property alias searchModel: searchModel
     readonly property bool resultsActive: searchModel.active

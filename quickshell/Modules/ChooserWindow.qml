@@ -533,6 +533,7 @@ FloatingWindow {
                 compact: window.compact
                 backEnabled: pane.canGoBack
                 forwardEnabled: pane.canGoForward
+                upEnabled: pane.canGoUp
                 sortKey: pane.effectiveSortKey
                 sortDescending: pane.effectiveSortDescending
                 resultsActive: pane.resultsActive
@@ -561,6 +562,7 @@ FloatingWindow {
                 onHiddenToggled: window.setShowHidden(!window.showHidden)
                 onBackRequested: pane.back()
                 onForwardRequested: pane.forward()
+                onUpRequested: pane.up()
                 onNewFolderRequested: menus.runAction("newFolder")
                 onNewDocumentRequested: (parentMenu, row) => menus.showNewDocumentSubmenu(parentMenu, row)
             }
