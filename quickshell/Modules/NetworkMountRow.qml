@@ -14,6 +14,7 @@ FilePlaceRow {
     actionIcon: "eject"
     actionTooltip: I18n.tr("Disconnect", "network mount action")
     busy: host.busyId === modelData.id
+    path: modelData.path ?? ""
     dropPath: modelData.path
     onClicked: host.navigateRequested(modelData.path)
     onMiddleClicked: host.tabRequested(modelData.path)

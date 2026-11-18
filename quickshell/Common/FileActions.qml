@@ -191,7 +191,7 @@ Singleton {
             },
             "showHidden": {
                 "icon": "visibility",
-                "label": I18n.tr("Show hidden files", "menu entry listing dot files"),
+                "label": I18n.tr("Toggle hidden files", "menu entry listing dot files"),
                 "contexts": browsingAndPicker
             },
             "reload": {

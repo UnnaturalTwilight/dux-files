@@ -523,6 +523,18 @@ FloatingWindow {
                 onTabMoved: (from, to) => window.tabManager.moveTab(from, to)
                 onTabMenuRequested: (index, pointX, pointY) => window.menus.presentTabMenu(index, tabRow, pointX, pointY)
             }
+
+            MouseArea {
+                id: windowDragZone
+                z: -1
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                enabled: windowControls !== null && header.compositorDecorated
+                onPressed: windowControls.tryStartMove()
+                onDoubleClicked: windowControls.tryToggleMaximize()
+            }
         }
 
         Item {
@@ -764,7 +776,7 @@ FloatingWindow {
                 chipColor: Theme.surfaceContainerLowest
                 rowColor: card.surfaceColor
                 viewMinimum: card.minimumWidth
-                closable: false
+                closable: true
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
                 body: window.activePane.body

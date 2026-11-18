@@ -78,6 +78,7 @@ StyledButton {
 
     FocusRing {
         visible: tab.visualFocus
+        anchors.margins: 0
     }
 
     DIcon {

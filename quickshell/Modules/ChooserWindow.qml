@@ -465,6 +465,7 @@ FloatingWindow {
             id: sidebarSlot
 
             anchors.top: header.bottom
+            anchors.topMargin: FilesMetrics.contentMarginV
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             width: window.sidebarDocked ? Math.max(FilesMetrics.sidebarMinWidth, Math.min(FilesMetrics.sidebarWidth, surface.width - Math.max(FilesMetrics.windowMinWidth, content.minimumWidth + FilesMetrics.contentMarginH))) : 0
@@ -526,7 +527,7 @@ FloatingWindow {
                 anchors.right: parent.right
                 anchors.margins: FilesMetrics.cardPadding
                 showSidebarToggle: !window.compact
-                showNewFolder: true
+                showNewFolder: false
                 showSplit: false
                 showOverflow: false
                 allowColumns: false

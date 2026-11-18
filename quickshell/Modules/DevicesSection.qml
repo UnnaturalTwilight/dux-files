@@ -68,7 +68,7 @@ FilePlaceSection {
         case device.ejectable || device.canPowerOff:
             return "eject";
         default:
-            return "stop_circle";
+            return "remove";
         }
     }
 
@@ -82,7 +82,7 @@ FilePlaceSection {
             return I18n.tr("Lock", "device action");
         case "eject":
             return I18n.tr("Eject", "device action");
-        case "stop_circle":
+        case "remove":
             return I18n.tr("Unmount", "device action");
         default:
             return "";
