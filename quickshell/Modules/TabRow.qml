@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import qs.Common
 import qs.DCommon.Widgets
+import qs.DCommon.FileBrowser
 
 Item {
     id: row
@@ -180,7 +181,8 @@ Item {
         fadeEdges: false
         interactive: false
         clip: true
-        contentWidth: strapline.width
+        contentWidth: strapline.width + Theme.outlineWidthFocused
+        flickableDirection: Flickable.HorizontalFlick
         contentHeight: height
 
         Item {
@@ -204,7 +206,10 @@ Item {
                     z: dragging ? 1 : 0
                     width: row.tabWidth
                     dragging: row.draggingIndex === index
-                    label: row.tabs[index] ?? ""
+                    label: row.tabs[index]?.label ?? ""
+                    iconName: row.tabs[index]?.iconName ?? "folder"
+                    glyph: row.tabs[index]?.glyph ?? ""
+                    path: row.tabs[index]?.path ?? ""
                     current: index === row.currentIndex
                     closable: row.tabs.length > 1
                     onWidthChanged: row.layout()
@@ -249,6 +254,17 @@ Item {
                                 return;
                             row.dragTo(row.logicalX(strapline.mapFromItem(null, centroid.scenePosition.x, 0).x));
                         }
+                    }
+
+                    Rectangle {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.left
+                        anchors.rightMargin: FilesMetrics.tabSpacing / 4
+                        width: Theme.outlineWidthFocused
+                        height: FileBrowserMetrics.columnGripHeight
+                        radius: Theme.cornerRadiusFull
+                        color: Theme.outlineVariant
+                        visible: !tab.dragging && tab.index !== 0
                     }
                 }
             }

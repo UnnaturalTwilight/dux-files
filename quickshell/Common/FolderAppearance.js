@@ -28,3 +28,16 @@ function emblemFor(look) {
 function iconFor(look, fallback) {
     return look?.icon ?? fallback;
 }
+
+function withDefault(look, path) {
+    if (look?.icon)
+        return look;
+    switch (path.slice(path.lastIndexOf("/") + 1)) {
+    case ".git":
+        return Object.assign({}, look, {
+            "icon": "folder-git"
+        });
+    default:
+        return look;
+    }
+}

@@ -134,6 +134,7 @@ Item {
 
                         readonly property string path: overview.pathFor(overview.tabs[index], index)
                         readonly property var entries: overview.listings[path] ?? []
+                        readonly property var look: FolderAppearances.lookup(overview.titleFor(overview.tabs[index])?.path ?? "")
 
                         current: index === overview.currentIndex
                         hot: tabDrop.containsDrag
@@ -194,12 +195,14 @@ Item {
                             radius: Theme.fullRadius(width, height)
                             color: Theme.withAlpha(tabCard.contentColor, Theme.tonalTintAlpha)
 
-                            DIcon {
+                            FileIcon {
                                 anchors.centerIn: parent
-                                name: "folder"
+                                iconName: overview.titleFor(overview.tabs[tabCard.index])?.iconName ?? "folder"
+                                iconOverride: tabCard.look?.icon ?? ""
+                                glyph: overview.titleFor(overview.tabs[tabCard.index])?.glyph ?? ""
                                 size: Theme.iconSizeSmall
-                                filled: true
                                 color: tabCard.contentColor
+                                tint: tabCard.look?.color || "transparent"
                             }
                         }
 
@@ -211,7 +214,7 @@ Item {
                             anchors.leftMargin: Theme.spacingS
                             anchors.rightMargin: Theme.spacingXS
                             anchors.verticalCenter: closeButton.verticalCenter
-                            text: overview.titleFor(overview.tabs[tabCard.index])
+                            text: overview.titleFor(overview.tabs[tabCard.index])?.label
                             color: tabCard.contentColor
                             font.pixelSize: Theme.fontSizeMedium
                             font.weight: Theme.fontWeightMedium

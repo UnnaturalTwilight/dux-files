@@ -27,6 +27,12 @@ Singleton {
     function lookup(path) {
         if (!path)
             return null;
+        return Look.withDefault(stored(path), path);
+    }
+
+    function stored(path) {
+        if (!path)
+            return null;
         return entries[pathKey(path)] ?? null;
     }
 
