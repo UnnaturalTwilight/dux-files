@@ -740,6 +740,36 @@ FloatingWindow {
                     width: parent.width
                     height: FilesMetrics.topbarControlSize
 
+                    StyledText {
+                        id: selectionText
+                        anchors.left: parent.left
+                        anchors.leftMargin: Theme.spacingS
+                        anchors.right: clearSelection.left
+                        anchors.rightMargin: Theme.spacingM
+                        anchors.verticalCenter: parent.verticalCenter
+                        visible: window.multiple && !window.saving
+                        text: I18n.tr("%1 selected", "count of selected items").arg(pane.selection.paths.length);
+                        color: Theme.surfaceText
+                        font.pixelSize: Theme.fontSizeMedium
+                        font.weight: Theme.fontWeightMedium
+                        horizontalAlignment: Text.AlignLeft
+                        wrapMode: Text.NoWrap
+                        elide: Text.ElideRight
+                    }
+
+                    FlatButton {
+                        id: clearSelection
+                        anchors.right: newFolderButton.left
+                        anchors.rightMargin: Theme.spacingM
+                        anchors.verticalCenter: parent.verticalCenter
+                        visible: window.multiple && !window.saving && !window.saving
+                        iconName: "close"
+                        backgroundColor: Theme.chipSurface
+                        tooltipText: I18n.tr("Clear the selection", "tooltip on the button clearing the file selection")
+                        tooltipSide: "top"
+                        onClicked: pane.selection.clear()
+                    }
+
                     DTextField {
                         id: nameField
 

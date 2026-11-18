@@ -15,6 +15,10 @@ Row {
     property bool showClipboard: true
     property string hint: ""
     property real room: Number.POSITIVE_INFINITY
+    property bool showSelection: true
+    property int selectionCount: 0
+    property int selectionBytes: 0
+    property bool selectionActions: false
 
     readonly property int clipboardCount: ClipboardService.paths.length
     readonly property real textRoom: room - (chip.visible ? chip.width + spacing : 0)
@@ -45,6 +49,13 @@ Row {
             return I18n.tr("%1 items copied", "clipboard indicator for copied items").arg(clipboardCount);
         }
     }
+    readonly property string selectionText: {
+        const items = I18n.tr("%1 selected", "count of selected items").arg(selectionCount);
+        return selectionBytes < 0 ? items : `${items} · ${FileFormat.size(selectionBytes)}`;
+    }
+
+    signal selectionCleared
+    // signal selectionActionRequested(string action)
 
     spacing: Theme.spacingS
 
@@ -72,6 +83,80 @@ Row {
         color: Theme.surfaceVariantText
         font.pixelSize: Theme.fontSizeSmall
         wrapMode: Text.NoWrap
+    }
+
+    Rectangle {
+        id: selectionChip
+
+        anchors.verticalCenter: parent.verticalCenter
+        visible: status.showSelection && status.selectionCount > 1
+        width: selectionRow.implicitWidth + FileBrowserMetrics.pathPillPadding + Theme.spacingXXS
+        height: FileBrowserMetrics.pathPillHeight
+        radius: FileBrowserMetrics.pathPillRadius
+        color: Theme.chipLayer
+        border.width: Theme.outlineWidth
+        border.color: Theme.outlineVariant
+        Accessible.role: Accessible.StaticText
+        Accessible.name: status.selectionText
+
+        Row {
+            id: selectionRow
+
+            anchors.left: parent.left
+            anchors.leftMargin: FileBrowserMetrics.pathPillPadding
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: FileBrowserMetrics.pathPillSpacing
+
+            DIcon {
+                anchors.verticalCenter: parent.verticalCenter
+                name: "select_all"
+                size: FileBrowserMetrics.pathIconSize
+                color: Theme.primary
+            }
+
+            StyledText {
+                anchors.verticalCenter: parent.verticalCenter
+                text: selectionBytes < 0 ? selectionCount : `${selectionCount} · ${FileFormat.size(selectionBytes)}`
+                color: Theme.surfaceText
+                font.pixelSize: Theme.fontSizeMedium
+                font.weight: Theme.fontWeightMedium
+                font.family: Theme.monoFontFamily
+                horizontalAlignment: Text.AlignLeft
+                wrapMode: Text.NoWrap
+                elide: Text.ElideRight
+            }
+
+            DActionButton {
+                id: clearSelection
+                anchors.verticalCenter: parent.verticalCenter
+                buttonSize: FileBrowserMetrics.pathPillHeight - Theme.spacingXXS * 2
+                iconName: "close"
+                iconSize: Theme.iconSizeSmall
+                iconColor: Theme.surfaceVariantText
+                tooltipText: I18n.tr("Clear the selection", "tooltip on the button clearing the file selection")
+                tooltipSide: "top"
+                onClicked: status.selectionCleared()
+            }
+
+            // Row {
+            //     Repeater {
+            //         model: ["copy", "cut", "trash"]
+
+            //         DActionButton {
+            //             required property string modelData
+
+            //             anchors.verticalCenter: parent.verticalCenter
+            //             buttonSize: FileBrowserMetrics.pathPillHeight - Theme.spacingXXS * 2
+            //             iconName: FileActions.icon(modelData)
+            //             iconSize: Theme.iconSizeSmall
+            //             iconColor: modelData === "trash" ? Theme.error : Theme.surfaceVariantText
+            //             tooltipText: FileActions.label(modelData)
+            //             tooltipSide: "top"
+            //             onClicked: status.selectionActionRequested(modelData)
+            //         }
+            //     }
+            // }
+        }
     }
 
     Rectangle {
@@ -105,10 +190,11 @@ Row {
 
             StyledText {
                 anchors.verticalCenter: parent.verticalCenter
-                text: status.compact ? String(status.clipboardCount) : status.clipboardText
+                text: status.clipboardCount
                 color: Theme.surfaceText
                 font.pixelSize: Theme.fontSizeMedium
                 font.weight: Theme.fontWeightMedium
+                font.family: Theme.monoFontFamily
             }
 
             DActionButton {

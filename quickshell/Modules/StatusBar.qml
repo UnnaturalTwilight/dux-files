@@ -21,18 +21,24 @@ Item {
     property var sortKeys: []
     property string sortKey: "name"
     property bool sortDescending: false
+    property alias selectionCount: status.selectionCount
+    property alias selectionBytes: status.selectionBytes
+    property alias selectionActions: status.selectionActions
 
     signal viewModeSelected(string mode)
     signal previewToggled
     signal hiddenToggled
     signal sortKeySelected(string key)
     signal sortDirectionToggled
+    signal selectionCleared
+    // signal selectionActionRequested(string action)
 
     implicitHeight: FilesMetrics.statusBarHeight
     LayoutMirroring.enabled: I18n.isRtl
     LayoutMirroring.childrenInherit: true
 
     PaneStatus {
+        id: status
         anchors.left: parent.left
         anchors.leftMargin: Theme.spacingS
         anchors.verticalCenter: parent.verticalCenter
@@ -41,6 +47,8 @@ Item {
         hint: bar.hint
         room: bar.width - controls.width - Theme.spacingS * 2
         compact: room < FilesMetrics.searchMinWidth
+        onSelectionCleared: bar.selectionCleared()
+        // onSelectionActionRequested: action => bar.selectionActionRequested(action)
     }
 
     Row {
