@@ -21,6 +21,7 @@ OverlayDialog {
 
     readonly property string path: entry?.path ?? ""
     readonly property var look: FolderAppearances.lookup(path)
+    readonly property var custom: FolderAppearances.stored(path)
     readonly property var names: tab === 0 ? FolderAppearances.badges : FolderAppearances.icons
     readonly property bool customColor: (look?.color ?? "") !== "" && !FolderAppearances.colors.includes(look.color)
     readonly property var shown: filter === "" ? names : names.filter(name => name.toLowerCase().includes(filter.toLowerCase()))
@@ -73,7 +74,7 @@ OverlayDialog {
     }
 
     function apply(values) {
-        FolderAppearances.set(path, Object.assign({}, root.look ?? {}, values));
+        FolderAppearances.set(path, Object.assign({}, root.custom ?? {}, values));
     }
 
     ColumnLayout {
@@ -266,8 +267,8 @@ OverlayDialog {
             }
 
             TextButton {
-                text: I18n.tr("Clear", "folder appearance action clearing the badge")
-                visible: String(root.look?.emblem ?? "") !== "" || String(root.look?.icon ?? "") !== ""
+                text: I18n.tr("Reset", "folder appearance action resetting the badge and icon to the default")
+                visible: String(root.custom?.emblem ?? "") !== "" || String(root.custom?.icon ?? "") !== ""
                 onClicked: root.apply({
                     "emblem": "",
                     "icon": ""

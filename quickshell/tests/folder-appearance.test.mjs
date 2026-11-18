@@ -5,7 +5,7 @@ import { source } from "./qml-script.mjs";
 
 const scope = vm.createContext({});
 vm.runInContext(source("../Common/FolderAppearance.js").replace(/^\.pragma.*$/gm, ""), scope);
-const look = vm.runInContext("({normalize, isEmpty, tintFor, emblemFor, iconFor})", scope);
+const look = vm.runInContext("({normalize, isEmpty, tintFor, emblemFor, iconFor, withDefault})", scope);
 
 test("only well formed values survive a round trip", () => {
     assert.deepEqual({ ...look.normalize({ color: "#448AFF", icon: "folder-red" }) },
@@ -42,4 +42,16 @@ test("a badge can be a theme name, a local path or a web address", () => {
         assert.equal(look.normalize({ emblem }).emblem, emblem);
     assert.deepEqual({ ...look.normalize({ emblem: "javascript:alert(1)" }) }, {});
     assert.deepEqual({ ...look.normalize({ emblem: "ftp://host/logo.png" }) }, {});
+});
+
+test("a .git folder gets the git icon unless its look already names an icon", () => {
+    assert.deepEqual({ ...look.withDefault(null, "/home/me/src/app/.git") }, { icon: "folder-git" });
+    assert.deepEqual({ ...look.withDefault({ color: "#448aff" }, "/.git") }, { color: "#448aff", icon: "folder-git" });
+    assert.deepEqual({ ...look.withDefault({ icon: "folder-red" }, "/src/.git") }, { icon: "folder-red" });
+});
+
+test("other folders keep their look", () => {
+    assert.equal(look.withDefault(null, "/home/me/.github"), null);
+    assert.equal(look.withDefault(null, "/home/me/constructor"), null);
+    assert.deepEqual({ ...look.withDefault({ color: "#448aff" }, "/home/me/src") }, { color: "#448aff" });
 });

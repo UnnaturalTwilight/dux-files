@@ -40,7 +40,7 @@ FilePlaceSection {
     FilePlaceRow {
         visible: NetworkService.available
         label: I18n.tr("Connect to Server…", "sidebar entry opening the connect to server dialog")
-        iconName: "folder-remote"
+        glyph: "language"
         busy: NetworkService.connecting
         onClicked: section.connectRequested()
     }

@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import qs.Common
 import qs.DCommon.Widgets
+import qs.DCommon.FileBrowser
 
 StyledButton {
     id: tab
@@ -10,6 +11,9 @@ StyledButton {
     focusPolicy: Qt.TabFocus
 
     property string label: ""
+    property string iconName: "folder"
+    property string glyph: ""
+    property string path: ""
     property bool current: false
     property bool closable: true
     property bool dragging: false
@@ -19,6 +23,7 @@ StyledButton {
     signal dropped(var drop)
     signal menuRequested(real pointX, real pointY)
 
+    readonly property var look: path !== "" ? FolderAppearances.lookup(path) : null
     readonly property color contentColor: current ? Theme.surfaceText : Theme.onSurfaceVariant
 
     implicitWidth: FilesMetrics.tabMaxWidth
@@ -81,28 +86,30 @@ StyledButton {
         anchors.margins: 0
     }
 
-    DIcon {
+    FileIcon {
         id: glyph
-
         anchors.left: parent.left
-        anchors.leftMargin: Theme.spacingM
+        anchors.leftMargin: Theme.spacingXS
         anchors.verticalCenter: parent.verticalCenter
-        name: "folder"
-        size: Theme.iconSizeMedium
+        iconName: tab.iconName
+        iconOverride: tab.look?.icon ?? ""
+        glyph: tab.glyph
+        size: Theme.iconSizeSmall
         color: tab.contentColor
+        tint: tab.look?.color || "transparent"
     }
 
     StyledText {
         id: title
 
         anchors.left: glyph.right
-        anchors.leftMargin: Theme.spacingS
+        anchors.leftMargin: Theme.spacingXS
         anchors.right: closeButton.left
         anchors.rightMargin: Theme.spacingXXS
         anchors.verticalCenter: parent.verticalCenter
         text: tab.label
         color: tab.contentColor
-        font.pixelSize: Theme.fontSizeSmall
+        font.pixelSize: Theme.fontSizeMedium
         font.weight: tab.current ? Theme.fontWeightMedium : Theme.fontWeight
         horizontalAlignment: Text.AlignLeft
         wrapMode: Text.NoWrap

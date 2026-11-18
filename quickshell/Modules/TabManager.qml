@@ -301,7 +301,26 @@ QtObject {
     }
 
     function tabLabel(state) {
-        return folderTitle(state?.panes?.[0]?.path || Paths.strip(Paths.home));
+        const path = state?.panes?.[0]?.path ?? "";
+        const pane1 = folderTitle(path);
+        if (secondPane && state?.panes?.[1]?.path !== state?.panes?.[0]?.path) {
+            const pane2 = folderTitle(state?.panes?.[1]?.path);
+            if (pane2 && pane1 !== pane2)
+                return { label: pane1 + "  |  " + pane2 };
+        }
+        switch (true) {
+        case path === RecentService.path:
+            return { label: pane1, glyph: "history" };
+        case path === TrashService.filesPath:
+        case path === TrashService.path:
+            return { label: pane1, glyph: "delete" };
+        case path === "/":
+            return { label: pane1, glyph: "hard_drive" };
+        case path.startsWith(Paths.strip(Paths.runtimeDir) + "/gvfs/"):
+            return { label: pane1, iconName: "folder-remote", path };
+        default:
+            return { label: pane1, iconName: DirectoryService.userDirs.find(dir => dir.path === path)?.iconName, path };
+        }
     }
 
     function persistTabs() {
