@@ -286,16 +286,19 @@ QtObject {
         if (path === "/")
             return "/";
         if (path.startsWith(Paths.strip(Paths.runtimeDir) + "/gvfs/")) {
-            let [type, gvfsDevice] = path.replace(Paths.strip(Paths.runtimeDir) + "/gvfs/", "").split(":");
-            let data = {};
-            gvfsDevice.split(",").map((d) => { let [k, v] = d.split("="); data[k] = v; });
+            let type = "", data = {}, subpath = "";
+            path.replace(Paths.strip(Paths.runtimeDir) + "/gvfs/", "").split(/[:\/]/).map((s, i) => {
+                if (i === 0) type = s;
+                else if (i === 1) s.split(",").map((d) => { let [k, v] = d.split("="); data[k] = v; });
+                else subpath += "/" + s;
+            });
 
-            switch (type) {
-                case "smb-share":
-                    return FilePaths.baseName(data.share) + " on " + data.server;
-                default:
-                    return type + "://" + gvfsDevice;
-            }
+            if (type === "smb-share")
+                return (subpath ? FilePaths.baseName(subpath) : data.share) + " on " + data.server;
+            if (data.host)
+                return (subpath ? FilePaths.baseName(subpath) + " on " : "") + (data.user ? data.user + "@" : "") + data.host;
+
+            return subpath ? FilePaths.baseName(subpath) : type + "://" + path.replace(Paths.strip(Paths.runtimeDir) + "/gvfs/" + type + ":", "");
         }
         return FilePaths.baseName(path);
     }
