@@ -19,6 +19,7 @@ FocusScope {
     property bool hasFolderSettings: false
     property var restoringView: null
     property bool previewOpen: true
+    property bool previewExpandable: false
     property var cutSet: ({})
     property string nameFilter: ""
     property var filters: []
@@ -94,6 +95,7 @@ FocusScope {
     signal columnsMenuRequested(real pointX, real pointY)
     signal previewToggleRequested
     signal previewKeyRequested(string action, int step)
+    signal previewExpandRequested
     signal focusRequested
     signal serverDialogRequested
     signal connectFailed(string uri, var result)
@@ -559,6 +561,7 @@ FocusScope {
         showSelectionFooter: pane.framed
         previewDrawer: pane.internalPreview
         previewOpen: pane.previewOpen
+        previewExpandable: pane.previewExpandable
         previewWidth: CacheData.previewWidth
         previewKeys: true
         cutSet: pane.cutSet
@@ -610,6 +613,7 @@ FocusScope {
         onColumnPaneResizeRequested: width => SessionData.columnPaneWidth = width
         onPreviewToggleRequested: pane.previewToggleRequested()
         onPreviewKeyRequested: (action, step) => pane.previewKeyRequested(action, step)
+        onPreviewExpandRequested: pane.previewExpandRequested()
         onPreviewResized: width => pane.setPreviewWidth(width)
         onFocusRequested: pane.focusRequested()
         onTabRequested: target => pane.tabRequested(target)

@@ -381,16 +381,6 @@ Item {
 
         FlatButton {
             anchors.verticalCenter: parent.verticalCenter
-            visible: topbar.showViewControls && !topbar.compact
-            iconName: "view_sidebar"
-            iconColor: topbar.previewOpen ? Theme.onPrimary : Theme.surfaceText
-            backgroundColor: topbar.previewOpen ? Theme.primary : Theme.chipLayer
-            tooltipText: topbar.previewLabel
-            onClicked: topbar.previewToggled()
-        }
-
-        FlatButton {
-            anchors.verticalCenter: parent.verticalCenter
             visible: topbar.showViewControls && !topbar.compact && topbar.previewExpandable
             iconName: "open_in_full"
             backgroundColor: Theme.chipLayer

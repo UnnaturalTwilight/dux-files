@@ -377,6 +377,7 @@ FloatingWindow {
         internalPreview: false
         showHidden: window.showHidden
         previewOpen: window.previewOpen
+        previewExpandable: window.previewExpandable
         showActiveOutline: window.splitView
         cutSet: window.cutSet
         onActivateRequested: entry => window.openFlow.activate(entry)
@@ -397,6 +398,7 @@ FloatingWindow {
         }
         onPreviewToggleRequested: window.actions.runAction("togglePreview")
         onPreviewKeyRequested: (action, step) => previewDrawer.handleKey(action, step)
+        onPreviewExpandRequested: window.actions.runAction("previewExpand")
         onServerDialogRequested: window.dialogs.askServer()
         onConnectFailed: (uri, result) => window.dialogs.presentServer(uri, result)
         onRestoreRequested: window.actions.runAction("restore")
@@ -805,6 +807,7 @@ FloatingWindow {
                 closable: true
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
+                expandable: window.previewExpandable
                 body: window.activePane.body
                 open: window.previewOpen && !window.activePane.body.columnsMode
                 available: content.width
