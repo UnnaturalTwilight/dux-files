@@ -50,6 +50,11 @@ FloatingWindow {
 
     onIsCompactModeChanged: menuVisible = false
 
+    Component.onCompleted: {
+        if ("appId" in window)
+            window.appId = "dev.duxlabs.files.settings";
+    }
+
     FocusScope {
         anchors.fill: parent
         focus: true

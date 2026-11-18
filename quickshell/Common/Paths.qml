@@ -21,6 +21,7 @@ Singleton {
         const base = (xdg && xdg !== "") ? xdg : Quickshell.env("HOME") + "/.config";
         return base + "/dfiles";
     }
+    readonly property url runtimeDir: StandardPaths.standardLocations(StandardPaths.RuntimeLocation)[0]
     property bool ready: false
 
     function stringify(path: url): string {

@@ -72,7 +72,7 @@ Item {
         id: sidebar
 
         anchors.margins: FilesMetrics.sidebarPadding
-        anchors.topMargin: 0
+        anchors.topMargin: compact ? FilesMetrics.sidebarPadding : 0
         currentPath: host.mainWindow.currentPath
         onVisibleChanged: {
             if (visible)

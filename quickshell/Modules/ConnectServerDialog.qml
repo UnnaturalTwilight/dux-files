@@ -147,7 +147,7 @@ OverlayDialog {
             FilePlaceRow {
                 required property var modelData
 
-                width: parent.width
+                width: parent.width ?? "0"
                 label: modelData.uri
                 iconName: "folder-remote"
                 actionIcon: "close"

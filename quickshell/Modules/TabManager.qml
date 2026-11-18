@@ -275,8 +275,8 @@ QtObject {
     }
 
     function folderTitle(path) {
-        if (path === "")
-            return I18n.tr("Files", "main window title");
+        if (!path)
+            return "";
         if (path === TrashService.filesPath)
             return I18n.tr("Trash", "trash view header and sidebar entry");
         if (path === RecentService.path)
@@ -285,6 +285,18 @@ QtObject {
             return I18n.tr("Home", "sidebar entry for the user's home folder");
         if (path === "/")
             return "/";
+        if (path.startsWith(Paths.strip(Paths.runtimeDir) + "/gvfs/")) {
+            let [type, gvfsDevice] = path.replace(Paths.strip(Paths.runtimeDir) + "/gvfs/", "").split(":");
+            let data = {};
+            gvfsDevice.split(",").map((d) => { let [k, v] = d.split("="); data[k] = v; });
+
+            switch (type) {
+                case "smb-share":
+                    return FilePaths.baseName(data.share) + " on " + data.server;
+                default:
+                    return type + "://" + gvfsDevice;
+            }
+        }
         return FilePaths.baseName(path);
     }
 
