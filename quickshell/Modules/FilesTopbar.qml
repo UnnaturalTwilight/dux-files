@@ -13,6 +13,7 @@ Item {
     property bool splitView: false
     property bool backEnabled: false
     property bool forwardEnabled: false
+    property bool upEnabled: false
     property bool compact: false
     property bool showJobs: false
     property string viewMode: "list"
@@ -180,6 +181,7 @@ Item {
     signal hiddenToggled
     signal backRequested
     signal forwardRequested
+    signal upRequested
     signal splitToggled
     signal viewModeSelected(string mode)
     signal zoomRequested(int step)
@@ -284,7 +286,7 @@ Item {
 
         FlatButton {
             anchors.verticalCenter: parent.verticalCenter
-            visible: topbar.flatNavigation && !topbar.sidebarToggleOnly
+            visible: topbar.flatNavigation
             enabled: topbar.backEnabled
             iconName: I18n.isRtl ? "arrow_forward" : "arrow_back"
             tooltipText: I18n.tr("Back", "tooltip on the button going to the previous location")
@@ -293,11 +295,20 @@ Item {
 
         FlatButton {
             anchors.verticalCenter: parent.verticalCenter
-            visible: topbar.flatNavigation && !topbar.sidebarToggleOnly
+            visible: topbar.flatNavigation
             enabled: topbar.forwardEnabled
             iconName: I18n.isRtl ? "arrow_back" : "arrow_forward"
             tooltipText: I18n.tr("Forward", "tooltip on the button going to the next location")
             onClicked: topbar.forwardRequested()
+        }
+
+        FlatButton {
+            anchors.verticalCenter: parent.verticalCenter
+            visible: topbar.flatNavigation
+            enabled: topbar.upEnabled
+            iconName: "arrow_upward"
+            tooltipText: I18n.tr("Parent folder", "tooltip on the button going up to the parent folder")
+            onClicked: topbar.upRequested()
         }
 
         NavButtonPair {
@@ -307,6 +318,16 @@ Item {
             forwardEnabled: topbar.forwardEnabled
             onBackRequested: topbar.backRequested()
             onForwardRequested: topbar.forwardRequested()
+        }
+
+        FlatButton {
+            anchors.verticalCenter: parent.verticalCenter
+            visible: !topbar.flatNavigation
+            enabled: topbar.upEnabled
+            iconName: "arrow_upward"
+            backgroundColor: Theme.chipSurface
+            tooltipText: I18n.tr("Parent folder", "tooltip on the button going up to the parent folder")
+            onClicked: topbar.upRequested()
         }
 
         FlatButton {

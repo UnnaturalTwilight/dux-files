@@ -147,6 +147,9 @@ QtObject {
         case "forward":
             activePane.forward();
             return;
+        case "parent":
+            activePane.up();
+            return;
         case "editPath":
             activePane.editPath();
             return;
