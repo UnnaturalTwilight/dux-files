@@ -649,11 +649,13 @@ FloatingWindow {
                 showPreview: !window.compact
                 previewOpen: window.previewOpen
                 previewLabel: topbar.previewLabel
+                hiddenShown: window.showHidden
                 sortKeys: topbar.activeSortKeys
                 sortKey: pane.effectiveSortKey
                 sortDescending: pane.effectiveSortDescending
                 onViewModeSelected: mode => window.setViewMode(mode)
                 onPreviewToggled: window.setPreviewOpen(!window.previewOpen)
+                onHiddenToggled: window.setShowHidden(!window.showHidden)
                 onSortKeySelected: key => window.setSort(key)
                 onSortDirectionToggled: window.setDirection(!window.sortDescending)
             }

@@ -605,6 +605,7 @@ FloatingWindow {
                     viewMode: window.activePane.viewMode
                     folderRemembered: window.activePane.folderRemembered
                     folderHasSettings: window.activePane.hasFolderSettings
+                    hiddenShown: window.showHidden
                     previewOpen: window.previewOpen
                     previewExpandable: window.previewExpandable
                     trashActive: window.activePane.trashActive
@@ -640,6 +641,7 @@ FloatingWindow {
                     onSortDirectionToggled: window.activePane.flipSort()
                     onViewModeSelected: mode => window.activePane.setViewMode(mode)
                     onPreviewToggled: window.actions.runAction("togglePreview")
+                    onHiddenToggled: window.setShowHidden(!window.showHidden)
                     onCopyPathRequested: window.paneActions.copyText(window.currentPath)
                     onNewFolderRequested: window.actions.runAction("newFolder")
                     onNewDocumentRequested: (parentMenu, row) => window.menus.showNewDocumentSubmenu(parentMenu, row)
@@ -762,11 +764,13 @@ FloatingWindow {
                 viewModes: topbar.viewModes
                 previewOpen: window.previewOpen
                 previewLabel: topbar.previewLabel
+                hiddenShown: window.showHidden
                 sortKeys: topbar.activeSortKeys
                 sortKey: window.activePane.effectiveSortKey
                 sortDescending: window.activePane.effectiveSortDescending
                 onViewModeSelected: mode => window.activePane.setViewMode(mode)
                 onPreviewToggled: window.actions.runAction("togglePreview")
+                onHiddenToggled: window.setShowHidden(!window.showHidden)
                 onSortKeySelected: key => window.activePane.sortBy(key)
                 onSortDirectionToggled: window.activePane.flipSort()
             }

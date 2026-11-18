@@ -11,6 +11,7 @@ FileMenu {
     property int selectionCount: 0
     property bool hasDirectory: false
     property bool hasClipboard: false
+    property bool hiddenShown: false
     property bool forFolder: false
     property bool forPicker: false
     property bool selectedBookmarked: false
