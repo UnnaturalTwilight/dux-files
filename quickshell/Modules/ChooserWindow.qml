@@ -865,7 +865,7 @@ FloatingWindow {
                 anchors.right: parent.right
                 chipColor: Theme.surfaceContainerLowest
                 rowColor: topSegment.color
-                closable: false
+                closable: true
                 body: pane.body
                 open: window.previewShown
                 available: content.width
