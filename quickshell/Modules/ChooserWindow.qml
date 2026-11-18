@@ -784,7 +784,7 @@ FloatingWindow {
                         id: nameField
 
                         anchors.left: parent.left
-                        anchors.right: filterDropdown.visible ? filterDropdown.left : buttons.left
+                        anchors.right: newFolderButton.left
                         anchors.rightMargin: Theme.spacingM
                         anchors.verticalCenter: parent.verticalCenter
                         visible: window.saving
@@ -801,6 +801,19 @@ FloatingWindow {
                             if (!window.escapeBack())
                                 window.cancel();
                         }
+                    }
+
+                    FlatButton {
+                        id: newFolderButton
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: filterDropdown.visible ? filterDropdown.left : buttons.left
+                        anchors.rightMargin: Theme.spacingM
+                        enabled: pane.path !== "" && !(pane.recentActive || pane.trashActive)
+                        iconName: FileActions.icon("newFolder")
+                        backgroundColor: Theme.chipSurface
+                        tooltipText: I18n.tr("New folder", "file browser toolbar button creating a folder")
+                        tooltipSide: "top"
+                        onClicked: topbar.newFolderRequested()
                     }
 
                     FooterDropdown {

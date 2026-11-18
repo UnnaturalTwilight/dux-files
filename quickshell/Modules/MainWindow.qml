@@ -601,7 +601,6 @@ FloatingWindow {
                     showTabOverview: true
                     overviewOpen: window.overviewOpen
                     tabCount: window.tabManager.tabs.length
-                    showJobs: sidebarHost.compact
                     viewMode: window.activePane.viewMode
                     folderRemembered: window.activePane.folderRemembered
                     folderHasSettings: window.activePane.hasFolderSettings

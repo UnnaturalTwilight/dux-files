@@ -15,7 +15,6 @@ Item {
     property bool forwardEnabled: false
     property bool upEnabled: false
     property bool compact: false
-    property bool showJobs: false
     property string viewMode: "list"
     property bool previewOpen: false
     property bool previewExpandable: false
@@ -373,7 +372,7 @@ Item {
             id: viewButton
 
             anchors.verticalCenter: parent.verticalCenter
-            visible: topbar.showViewControls && !topbar.compact
+            visible: topbar.showViewControls && (!topbar.compact || !topbar.showOverflow)
             iconName: topbar.currentViewMode.icon
             backgroundColor: Theme.chipLayer
             tooltipText: I18n.tr("View", "keyboard shortcut group")
@@ -407,36 +406,6 @@ Item {
             backgroundColor: topbar.splitView ? Theme.primary : Theme.chipLayer
             tooltipText: I18n.tr("Split view", "tooltip on the button showing a second pane")
             onClicked: topbar.splitToggled()
-        }
-
-        FileSortButton {
-            id: sortButton
-
-            anchors.verticalCenter: parent.verticalCenter
-            visible: topbar.showViewControls
-            keys: topbar.activeSortKeys
-            sortKey: topbar.sortKey
-            descending: topbar.sortDescending
-            showLabel: !topbar.compact
-            onSortKeySelected: key => topbar.sortKeySelected(key)
-            onDirectionToggled: topbar.sortDirectionToggled()
-        }
-
-        JobsButton {
-            anchors.verticalCenter: parent.verticalCenter
-            hosted: topbar.showJobs
-            focusPolicy: Qt.TabFocus
-            buttonSize: FilesMetrics.topbarControlSize
-            iconSize: Theme.iconSizeMedium
-            backgroundColor: Theme.chipLayer
-        }
-
-        FlatButton {
-            anchors.verticalCenter: parent.verticalCenter
-            visible: topbar.searchCollapsed
-            iconName: "search"
-            tooltipText: I18n.tr("Search in Files", "placeholder in the search field")
-            onClicked: topbar.focusSearch()
         }
 
         FlatButton {
@@ -592,6 +561,10 @@ Item {
                 iconName: "splitscreen_vertical_add"
                 checked: topbar.splitView
                 onClicked: menu.pick(() => topbar.splitToggled())
+            }
+
+            FileMenuDivider {
+                visible: topbar.folderRemembered
             }
 
             FileMenuItem {
