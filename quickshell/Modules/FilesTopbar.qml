@@ -350,12 +350,23 @@ Item {
 
         FlatButton {
             anchors.verticalCenter: parent.verticalCenter
-            visible: topbar.showHiddenToggle
-            iconName: topbar.hiddenShown ? "visibility" : "visibility_off"
-            iconColor: topbar.hiddenShown ? Theme.onSelectedContainer : Theme.surfaceText
-            backgroundColor: topbar.hiddenShown ? Theme.selectedLayer : topbar.restingColor
-            tooltipText: FileActions.label("showHidden")
-            onClicked: topbar.hiddenToggled()
+            visible: topbar.searchCollapsed
+            iconName: "search"
+            tooltipText: I18n.tr("Search in Files", "placeholder in the search field")
+            onClicked: topbar.focusSearch()
+        }
+
+        FileSortButton {
+            id: sortButton
+
+            anchors.verticalCenter: parent.verticalCenter
+            visible: topbar.showViewControls
+            keys: topbar.activeSortKeys
+            sortKey: topbar.sortKey
+            descending: topbar.sortDescending
+            showLabel: !topbar.compact
+            onSortKeySelected: key => topbar.sortKeySelected(key)
+            onDirectionToggled: topbar.sortDirectionToggled()
         }
 
         FlatButton {
@@ -549,11 +560,19 @@ Item {
             }
 
             FileMenuDivider {
-                visible: menu.viewOnly
+                visible: menu.viewRows
             }
 
             FileMenuItem {
-                visible: menu.modeRows
+                visible: menu.viewRows
+                text: I18n.tr("Show hidden files", "menu entry listing dot files")
+                iconName: "visibility"
+                checked: topbar.hiddenShown
+                onClicked: topbar.hiddenToggled()
+            }
+
+            FileMenuItem {
+                visible: menu.viewRows
                 text: topbar.previewLabel
                 iconName: "view_sidebar"
                 checked: topbar.previewOpen

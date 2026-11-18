@@ -132,6 +132,7 @@ Item {
         hasDirectory: live && menus.selectionIsDirectory()
         singleImage: live && menus.selectionIsImage()
         hasClipboard: live && ClipboardService.hasFiles
+        hiddenShown: live && menus.mainWindow.showHidden
         extractable: live && menus.selectionIsExtractable()
         inResults: live && menus.mainWindow.activePane.resultsActive
         inTrash: live && menus.mainWindow.activePane.trashActive
@@ -255,6 +256,7 @@ Item {
         anchorItem: menus.anchorItem
         forFolder: true
         hasClipboard: ClipboardService.hasFiles
+        hiddenShown: menus.mainWindow.showHidden
         inTrash: menus.mainWindow.activePane.trashActive
         inRecent: menus.mainWindow.activePane.recentActive
         trashCount: TrashService.count

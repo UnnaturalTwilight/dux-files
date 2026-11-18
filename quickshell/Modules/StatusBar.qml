@@ -15,6 +15,7 @@ Item {
     property var viewModes: []
     property bool previewOpen: false
     property string previewLabel: ""
+    property bool hiddenShown: false
     property bool showSort: true
     property bool showPreview: true
     property var sortKeys: []
@@ -23,6 +24,7 @@ Item {
 
     signal viewModeSelected(string mode)
     signal previewToggled
+    signal hiddenToggled
     signal sortKeySelected(string key)
     signal sortDirectionToggled
 
@@ -89,6 +91,18 @@ Item {
         ControlSegment {
             anchors.verticalCenter: parent.verticalCenter
             visible: bar.showPreview
+            width: FilesMetrics.topbarControlSize
+            color: bar.hiddenShown ? Theme.selectedLayer : Theme.chipLayer
+            iconName: bar.hiddenShown ? "visibility" : "visibility_off"
+            iconColor: bar.hiddenShown ? Theme.onSelectedContainer : Theme.surfaceText
+            tooltipText: FileActions.label("showHidden")
+            tooltipSide: "top"
+            Accessible.checked: bar.hiddenShown
+            onClicked: bar.hiddenToggled()
+        }
+
+        ControlSegment {
+            anchors.verticalCenter: parent.verticalCenter
             width: FilesMetrics.topbarControlSize
             color: bar.previewOpen ? Theme.selectedLayer : Theme.chipLayer
             iconName: bar.previewOpen ? "preview_off" : "preview"
