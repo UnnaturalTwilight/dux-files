@@ -773,6 +773,11 @@ FloatingWindow {
                 onHiddenToggled: window.setShowHidden(!window.showHidden)
                 onSortKeySelected: key => window.activePane.sortBy(key)
                 onSortDirectionToggled: window.activePane.flipSort()
+                selectionCount: window.selectedPaths().length
+                selectionBytes: window.activePane.body.selectedBytes()
+                selectionActions: !window.activePane.virtualActive
+                onSelectionCleared: window.activePane.selection.clear()
+                // onSelectionActionRequested: action => window.actions.runAction(action)
             }
 
             FilePreviewDrawer {

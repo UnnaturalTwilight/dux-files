@@ -756,7 +756,6 @@ Item {
             id: pathSlot
 
             anchors.fill: parent
-            visible: !topbar.selectionShown
         }
 
         StyledText {
@@ -764,66 +763,13 @@ Item {
             anchors.right: parent.right
             anchors.leftMargin: Theme.spacingM
             anchors.verticalCenter: parent.verticalCenter
-            visible: !topbar.selectionShown && topbar.placeTitle !== ""
+            visible: topbar.placeTitle !== ""
             text: topbar.placeTitle
             color: Theme.surfaceText
             font.pixelSize: Theme.fontSizeMedium
             font.weight: Theme.fontWeightMedium
             horizontalAlignment: Text.AlignLeft
             elide: Text.ElideMiddle
-        }
-
-        Item {
-            anchors.fill: parent
-            visible: topbar.selectionShown
-
-            FlatButton {
-                id: clearSelection
-
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                iconName: "close"
-                tooltipText: I18n.tr("Clear the selection", "tooltip on the button clearing the file selection")
-                onClicked: topbar.selectionCleared()
-            }
-
-            StyledText {
-                anchors.left: clearSelection.right
-                anchors.right: selectionButtons.visible ? selectionButtons.left : parent.right
-                anchors.leftMargin: Theme.spacingS
-                anchors.rightMargin: Theme.spacingS
-                anchors.verticalCenter: parent.verticalCenter
-                text: topbar.selectionText
-                color: Theme.surfaceText
-                font.pixelSize: Theme.fontSizeMedium
-                font.weight: Theme.fontWeightMedium
-                horizontalAlignment: Text.AlignLeft
-                wrapMode: Text.NoWrap
-                elide: Text.ElideRight
-            }
-
-            Row {
-                id: selectionButtons
-
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                spacing: FilesMetrics.topbarSpacing
-                visible: topbar.selectionActions
-
-                Repeater {
-                    model: ["copy", "cut", "trash"]
-
-                    FlatButton {
-                        required property string modelData
-
-                        iconName: FileActions.icon(modelData)
-                        iconColor: modelData === "trash" ? Theme.error : Theme.surfaceText
-                        backgroundColor: Theme.chipLayer
-                        tooltipText: FileActions.label(modelData)
-                        onClicked: topbar.selectionActionRequested(modelData)
-                    }
-                }
-            }
         }
     }
 
