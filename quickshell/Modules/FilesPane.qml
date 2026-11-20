@@ -533,6 +533,7 @@ FocusScope {
 
         backend: DirectoryService
         thumbnailsEnabled: SettingsData.thumbnails
+        thumbnailSize: results.body.thumbnailSize
         thumbnailSizeLimit: pane.thumbnailSizeLimit
     }
 
