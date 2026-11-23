@@ -1,6 +1,6 @@
 [submodule "dank-qml-common"]
 	path = dux-qml-common
-	url = https://github.com/duxlabs-dev/dux-qml-common.git
+	url = https://forgejo.shrew-gray.ts.net/Unnatural/dux-qml-common.git
 	branch = master
 [submodule "dux-qt-base"]
 	path = dux-qt-base
