@@ -5,6 +5,8 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"sync"
+	"sync/atomic"
 
 	dhelper "github.com/duxlabs-dev/dux-go/elevate/helper"
 
@@ -40,14 +42,28 @@ type Stater interface {
 }
 
 type runner struct {
-	job         *job
-	stater      Stater
-	conflictAll Action
-	errorAll    Action
-	elevateRest bool
-	password    string
-	scanned     map[string]scanResult
-	estimating  bool
+	job               *job
+	stater            Stater
+	conflictAll       Action
+	folderConflictAll Action
+	errorAll          Action
+	elevateRest       bool
+	password          string
+	scanned           map[string]scanResult
+	estimating        bool
+	noClone           atomic.Bool
+	noRange           atomic.Bool
+	noUnnamed         atomic.Bool
+}
+
+var chunks sync.Pool
+
+func borrowChunk() *[]byte {
+	if buf, ok := chunks.Get().(*[]byte); ok && len(*buf) == copyChunk {
+		return buf
+	}
+	buf := make([]byte, copyChunk)
+	return &buf
 }
 
 func execute(j *job) error {
